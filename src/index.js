@@ -6,38 +6,45 @@ import './index.css';
 
 class Square extends React.Component {
 
-    /*Nelle classi JavaScript, devi sempre chiamare super quando definisci 
-    il costruttore di una sottoclasse (classe derivata). 
-    Tutte le classi componente React che hanno un constructor devono 
-    sempre richiamare super(props) come prima istruzione nel costruttore.*/ 
-    constructor(props){
-        super(props);
-        this.state={
-            value: null,
-        };
-    }
-
     render() {
       return (
           /*Richiamando this.setState dall’handler onClick nel 
           metodo render di Square, fondamentalmente stiamo dicendo 
           a React di ridisegnare quello Square ogni qual volta il suo 
           <button> viene cliccato*/ 
-          
+
         <button className="square" 
-        onClick={() => this.setState({value: 'X'})}
+        onClick={() => this.props.onClick()}  /*event handler per il click*/ 
         >
             
-          {this.state.value}
+          {this.props.value}
         </button>
       );
     }
   }
   
   class Board extends React.Component {
-    renderSquare(i) {
-      return <Square value={i}/>;
+
+    constructor(props){
+        super(props);
+        this.state={
+            squares: Array(9).fill(null),
+        }
     }
+
+    handleClick(i){
+        const squares = this.state.squares.slice();
+        squares[i]='X';
+        this.setState({squares: squares});
+    }
+
+
+    renderSquare(i) {
+      return <Square value={this.state.squares[i]}
+      onClick={() => this.handleClick(i)}
+      />;
+    } /*Ogni Square adesso riceverà una prop value che sarà valorizzata 
+    con 'X', 'O', o null nel caso dei quadrati vuoti.*/
   
     render() {
       const status = 'Next player: X';
