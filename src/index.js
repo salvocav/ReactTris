@@ -3,11 +3,32 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 
+
 class Square extends React.Component {
+
+    /*Nelle classi JavaScript, devi sempre chiamare super quando definisci 
+    il costruttore di una sottoclasse (classe derivata). 
+    Tutte le classi componente React che hanno un constructor devono 
+    sempre richiamare super(props) come prima istruzione nel costruttore.*/ 
+    constructor(props){
+        super(props);
+        this.state={
+            value: null,
+        };
+    }
+
     render() {
       return (
-        <button className="square">
-          {/* TODO */}
+          /*Richiamando this.setState dall’handler onClick nel 
+          metodo render di Square, fondamentalmente stiamo dicendo 
+          a React di ridisegnare quello Square ogni qual volta il suo 
+          <button> viene cliccato*/ 
+          
+        <button className="square" 
+        onClick={() => this.setState({value: 'X'})}
+        >
+            
+          {this.state.value}
         </button>
       );
     }
@@ -15,7 +36,7 @@ class Square extends React.Component {
   
   class Board extends React.Component {
     renderSquare(i) {
-      return <Square />;
+      return <Square value={i}/>;
     }
   
     render() {
@@ -59,7 +80,7 @@ class Square extends React.Component {
       );
     }
   }
-  
+ 
   // ========================================
   
   const root = ReactDOM.createRoot(document.getElementById("root"));
